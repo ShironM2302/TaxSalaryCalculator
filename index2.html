@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Tax Calculator</title>
+    <meta name="description" content="Salary tax calc">
+    <meta name="author" content="Shiron Manuelpillai">
+    <!--  normalize css-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <!--  fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <!--  my css-->
+    <link rel="stylesheet" href="style2.css">
+    <!--angularjs-->
+    <!--angularjs-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-chart.js/1.0.3/angular-chart.min.js"></script>
+
+</head>
+
+
+<body >
+   
+   <header>
+       <h1>Salary tax calculator 2015/2016</h1>
+   </header>
+   
+   <div class="container" ng-controller="mainCtrl">
+      
+      <div class="calculator">
+         <div class="calculator__container">
+            <form>
+                <h2>Enter your details:</h2>
+                <div class="question">
+                <label class="label-header" for="gross-salary">Gross wage</label>
+                <input name="value" type="number" ng-model="userGrossSalary" id="input" placeholder="e.g. 25000" required>
+                </div>
+                <div class="question">
+                    <label class="label-header">Student loan</label>
+                    <input type="radio" id="radio1"name="loan"><label class="label-options" for="radio1">Before 01/09/12</label>
+                    <input type="radio" id="radio3" name="loan"><label class="label-options" for="radio3">No loan</label>
+                    <input type="radio" id="radio2" name="loan"><label class="label-options" for="radio2">After 01/09/12</label>
+                    
+                </div>
+                <div class="question">
+                 <label class="label-header">Age</label>
+                    <input type="radio" id="radio4"name="age"><label class="label-options" for="radio4">Under 65</label>
+                    <input type="radio" id="radio5" name="age"><label class="label-options" for="radio5">Over 65</label>
+                </div>
+                <div class="button-container">
+                    <button ng-disabled="form.$invalid" type="submit" ng-click="addGrossSalary()" class="ghost-button--submit" value="Submit">Submit</button>
+                </div>
+            </form>
+             
+         </div>
+          
+      </div>
+      <div class="results">
+      
+      <div ng-show="show==1" class="results__container">
+         <h2>Salary Breakdown Table</h2>
+         
+         <table class="table">
+            <tbody class="table-body">
+                <tr>
+                    <th>Summary</th>
+                    <th>Yearly</th>
+                    <th>Monthly</th>
+                    <th>Weekly</th>
+                </tr>
+                <tr>
+                    <td>Gross Salary</td>
+                    <td>{{grossSalaryYearly | currency: "£"}} </td>
+                    <td>{{grossSalaryMonthly | currency: "£"}}</td>
+                    <td>{{grossSalaryWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Tax free allowance</td>
+                    <td>{{allowanceYearly | currency: "£"}}</td>
+                    <td>{{allowanceMonthly | currency: "£"}}</td>
+                    <td>{{allowanceWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Taxable income</td>
+                    <td>{{taxableYearly | currency: "£"}}</td>
+                    <td>{{taxableMonthly | currency: "£"}}</td>
+                    <td>{{taxableWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Tax due</td>
+                    <td>{{taxdueYearly | currency: "£"}}</td>
+                    <td>{{taxdueMonthly | currency: "£"}}</td>
+                    <td>{{taxdueWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Student loan</td>
+                    <td>{{studentLoanYearly | currency: "£"}}</td>
+                    <td>{{studentLoanMonthly | currency: "£"}}</td>
+                    <td>{{studentLoanWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>National Insurance</td>
+                    <td>{{niYearly | currency: "£"}}</td>
+                    <td>{{niMonthly | currency: "£"}}</td>
+                    <td>{{niWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Total deductions</td>
+                    <td>{{deductionsYearly | currency: "£"}}</td>
+                    <td>{{deductionsMonthly | currency: "£"}}</td>
+                    <td>{{deductionsWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Take home salary</td>
+                    <td>{{netYearly | currency: "£"}}</td>
+                    <td>{{netMonthly | currency: "£"}}</td>
+                    <td>{{netWeekly | currency: "£"}}</td>
+                </tr>
+            </tbody>
+        </table>
+         <button ng-click="show = 2" class="ghost-button--chart" value="Submit"> <i class="material-icons">insert_chart</i></button>
+          
+      </div>
+      
+      <div ng-show="show==2" class="results__chart-container">
+         <h2>Salary Breakdown Chart</h2>
+         <div class="options">
+            <select class="selectpicker" ng-model="selectChart">
+                <option value="column">Column</option>
+                <option value="bar">bar</option>
+                <option value="area">area</option>
+                <option value="spline">spline</option>
+                <option value="pie">pie</option>
+            </select>
+             
+         </div>
+         <div class="chart">
+           <canvas id="doughnut" chart-colors="colors" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+            
+
+             
+         </div>
+         <button ng-click="show = 1" class="ghost-button--back" value="Submit">Back</button>
+          
+      </div>
+      
+      </div>
+      
+      
+       
+       
+   </div>
+   
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</body>

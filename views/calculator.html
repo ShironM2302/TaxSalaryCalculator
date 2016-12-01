@@ -1,0 +1,139 @@
+<header>
+       <h1>Salary tax calculator 2015/2016</h1>
+   </header>
+   
+   <div class="container" ng-controller="mainCtrl">
+      
+      <div class="calculator">
+         <div class="calculator__container">
+            <form ng-submit="addGrossSalary()">
+                <h2>Enter your details:</h2>
+                <div class="question">
+                <label class="label-header" for="gross-salary">Gross wage</label>
+                <input name="value" type="number" ng-model="userGrossSalary" id="input" placeholder="e.g. 25000" required>
+                </div>
+                <div class="question">
+                    <label class="label-header">Student loan</label>
+                    <input type="radio"  ng-model="loan"  value="oldLoan" id="radio1"name="loan"><label class="label-options" for="radio1">Before 01/09/12</label>
+                    <input type="radio"   ng-model="loan" value="noLoan" id="radio3" name="loan"><label class="label-options" for="radio3">No loan</label>
+                    <input type="radio"   ng-model="loan" value="newLoan" id="radio2" name="loan"><label class="label-options" for="radio2">After 01/09/12</label>
+                    
+                  
+                    
+                </div>
+                <div class="question">
+                 <label class="label-header">Age</label>
+                    <input type="radio" ng-model="age" value="under" id="radio4"name="age"><label class="label-options" for="radio4">Under 65</label>
+                    <input type="radio" ng-model="age" value="over" id="radio5" name="age"><label class="label-options" for="radio5">Over 65</label>
+                </div>
+                <div class="button-container">
+                    <button ng-disabled="form.$dirty &&form.$invalid" type="submit" class="ghost-button--submit" value="Submit">Submit</button>
+                </div>
+            </form>
+             
+         </div>
+          
+      </div>
+      <div class="results">
+      
+      <div ng-show="show==1" class="results__container">
+         <h2>Salary Breakdown Table</h2>
+         
+         <table class="table">
+            <tbody class="table-body">
+                <tr>
+                    <th>Summary</th>
+                    <th>Yearly</th>
+                    <th>Monthly</th>
+                    <th>Weekly</th>
+                </tr>
+                <tr>
+                    <td>Gross Salary</td>
+                    <td>{{grossSalaryYearly | currency: "£"}} </td>
+                    <td>{{grossSalaryMonthly | currency: "£"}}</td>
+                    <td>{{grossSalaryWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Tax free allowance</td>
+                    <td>{{allowanceYearly | currency: "£"}}</td>
+                    <td>{{allowanceMonthly | currency: "£"}}</td>
+                    <td>{{allowanceWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Taxable income</td>
+                    <td>{{taxableYearly | currency: "£"}}</td>
+                    <td>{{taxableMonthly | currency: "£"}}</td>
+                    <td>{{taxableWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Tax due</td>
+                    <td>{{taxdueYearly | currency: "£"}}</td>
+                    <td>{{taxdueMonthly | currency: "£"}}</td>
+                    <td>{{taxdueWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Student loan</td>
+                    <td>{{studentLoanYearly | currency: "£"}}</td>
+                    <td>{{studentLoanMonthly | currency: "£"}}</td>
+                    <td>{{studentLoanWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>National Insurance</td>
+                    <td>{{niYearly | currency: "£"}}</td>
+                    <td>{{niMonthly | currency: "£"}}</td>
+                    <td>{{niWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Total deductions</td>
+                    <td>{{deductionsYearly | currency: "£"}}</td>
+                    <td>{{deductionsMonthly | currency: "£"}}</td>
+                    <td>{{deductionsWeekly | currency: "£"}}</td>
+                </tr>
+                <tr>
+                    <td>Take home salary</td>
+                    <td>{{netYearly | currency: "£"}}</td>
+                    <td>{{netMonthly | currency: "£"}}</td>
+                    <td>{{netWeekly | currency: "£"}}</td>
+                </tr>
+            </tbody>
+        </table>
+         <button ng-click="show = 2" class="ghost-button--chart" value="Submit"> <i class="material-icons">insert_chart</i></button>
+          
+      </div>
+      
+      <div ng-show="show==2" class="results__chart-container">
+         <h2>Salary Breakdown Chart</h2>
+         <div class="options">
+           <label for="chartType"> Chart Type: </label><br>
+            <select  name="chartType" class="selectpicker" ng-model="selectChart">
+                <option value="bar">bar</option>
+                <option value="polar">polar</option>
+                <option value="doughnut">doughnut</option>
+                <option value="pie">pie</option>
+            </select>
+             
+         </div>
+         <div class="chart">
+           <canvas ng-if="selectChart == 'pie'" id="pie" chart-colors="colors" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
+           
+           <canvas ng-if="selectChart == 'doughnut'" id="doughnut" chart-colors="colors" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+           
+           <canvas ng-if="selectChart == 'bar'" id="bar" chart-colors="colors" class="chart chart-horizontal-bar" chart-data="data" chart-labels="labels" ></canvas>
+           
+           <canvas ng-if="selectChart == 'polar'" id="polar-area" chart-colors="colors" class="chart chart-polar-area" chart-data="data" chart-labels="labels"></canvas>
+           
+
+            
+
+             
+         </div>
+         <button ng-click="show = 1" class="ghost-button--back">Back</button>
+          
+      </div>
+      
+      </div>
+      
+      
+       
+       
+   </div>
