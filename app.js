@@ -50,6 +50,8 @@ app.controller('mainCtrl', function($scope) {
     
     $scope.selectChart = 'pie';
     
+     Chart.defaults.global.defaultFontColor = '#fff';
+    
 
 
   $scope.addGrossSalary = function() {
